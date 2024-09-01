@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 
-const connectDB = require('../Mongoose');
+const connectDB = require('./Mongoose');
 connectDB()
 
 app.use('/',appRoute);
