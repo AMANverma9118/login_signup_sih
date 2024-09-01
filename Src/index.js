@@ -1,9 +1,9 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
-const routes = require("./Src/Routes/route")
+const routes = require("./Routes/route")
 const app = express();
-const appRoute = require("./Src/Routes/route");
+const appRoute = require("./Routes/route");
 
 require("dotenv").config();
 
@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 
-const connectDB = require('./Mongoose');
+const connectDB = require('../Mongoose');
 connectDB()
 
 app.use('/',appRoute);
