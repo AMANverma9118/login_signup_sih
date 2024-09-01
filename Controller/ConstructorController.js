@@ -1,27 +1,29 @@
 const constru = require('../Modules/Constructor');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const randomstring = require('randomstring');
 
+const ConstSignup = async (req, res) => {
+    const { Email, Name, Password } = req.body
 
-const ConstSignup = async (req,res) => {
-    const { Email, Name} = req.body
 
 
     try {
         let checkUser = await constru.findOne({ "$or": [{ Email: Email }, { Name: Name }] })
-        let Allinfo = await req.body;
-        console.log(Allinfo);
+
         if (!checkUser) {
+            const salt = await bcrypt.genSalt()
+            const UserPasswordHash = await bcrypt.hash(Password, salt)
 
             let result = await constru.create({
                 ...req.body,
+                Password: UserPasswordHash
             })
             res.send({
                 data: result,
                 message: "User created successfully....!!",
                 status: true
             })
-        }
-        else if(!Allinfo){
-            message: "Fill all the information";
         }
         else {
             res.status(403).json({ status: false, error: "User already exist" })
@@ -32,62 +34,45 @@ const ConstSignup = async (req,res) => {
 
 
     } catch (error) {
-        res.status(403).json({ status: false, error: "Fill all the information" })
+        res.status(403).json({ status: false, error: error })
     }
 }
+
 
 const Constrlogin = async (req, res) => {
+    const { Gov_id_of_Contractor, Password } = req.body;
     try {
-        const { Mobile_No } = req.body;
+        const result = await constru.findOne({ Gov_id_of_Contractor: Gov_id_of_Contractor })
+        console.log(result);
+        if (!!result) {
+            let isPasswordValid = await bcrypt.compare(Password, result.Password)
+            console.log(Password);
+            if (!!isPasswordValid) {
+                console.log("he");
+                const token = jwt.sign({ user_id: result?._id, Gov_id_of_Contractor }, process.env.TOKEN_KEY);
 
-        // Check if the phone number exists in the Consumer collection
-        const user = await constru.findOne({ Mobile_No });
-
-        if (!user) {
-            return res.status(400).json({
-                success: false,
-                msg: "Phone number not registered"
-            });
+                res.send({
+                    data: { ...result, token },
+                    status: true
+                })
+            } else {
+                res.status(403).json({ status: false, error: "Password/Gov_id_of_Contractor is not correct" })
+            }
         }
-
-        // Generate OTP
-        const otp = otpGenerator.generate(6, { upperCaseAlphabets: false, specialChars: false, lowerCaseAlphabets: false });
-
-        // Set OTP expiration time to 5 minutes from now
-        const otpExpiration = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
-
-        // Save OTP and expiration time in the database
-        await OtpModel.findOneAndUpdate(
-            { Mobile_No },
-            { otp, otpExpiration },
-            { upsert: true, new: true, setDefaultsOnInsert: true }
-        );
-
-        // Send OTP to the phone number
-        await twilioClient.messages.create({
-            body: `Your OTP is: ${otp}`,
-            to: Mobile_No,
-            from: '+919118359330' // Replace with your Twilio number
-        });
-
-        return res.status(200).json({
-            success: true,
-            msg: "OTP sent successfully!"
-        });
+        else {
+            res.status(403).json({ status: false, error: "Password/Gov_id_of_Contractor is not correct" })
+        }
     } catch (error) {
-        console.error("Login Error:", error);  // Log the error
-        return res.status(500).json({
-            success: false,
-            msg: "Internal server error"
-        });
+        res.status(403).json({ status: false, error: error })
     }
 }
+
+
 
 
 
 
 module.exports = {
     ConstSignup,
-    Constrlogin,
-    verifyOTP
+    Constrlogin
 }

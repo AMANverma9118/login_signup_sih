@@ -16,6 +16,10 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: false
     },
+    Password:{
+        type: String,
+        required:true,
+    },
     Address_of_Company: {
         type: String,
         required: true,
@@ -67,6 +71,13 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: false
     },
+    fcmToken: {
+        type:String,
+        default:null
+    },
+    
+    deviceType : {type:String ,default:null},
+    token : {type:String, default:''}
 })
 
 const constructor = mongoose.model("Constructor",userSchema);

@@ -11,6 +11,11 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: false
     },
+    Password:{
+        type: String,
+        required:true,
+        unique: true,
+    },
     DOB: {
         type: String,
         required: true,
