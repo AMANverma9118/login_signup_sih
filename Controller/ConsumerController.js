@@ -34,7 +34,7 @@ const ConsumSignup = async (req, res) => {
 
 
     } catch (error) {
-        res.status(403).json({ status: false, error: error })
+        res.status(405).json({ status: false, error: error })
     }
 }
 
@@ -61,7 +61,7 @@ const Consumlogin = async (req, res) => {
             res.status(403).json({ status: false, error: "Password/Gov_id_of_Consumer is not correct" })
         }
     } catch (error) {
-        res.status(403).json({ status: false, error: error })
+        res.status(405).json({ status: false, error: error })
     }
 }
 
