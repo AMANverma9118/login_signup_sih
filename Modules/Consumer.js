@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
         unique: true,
     },
     DOB: {
-        type: String,
+        type: Date,
         required: true,
         unique: false
     },
