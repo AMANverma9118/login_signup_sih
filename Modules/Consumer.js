@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema({
         unique: true
     },
     House_No: {
-        type: Number,
+        type: String,
         required: true,
         unique: false
     },
