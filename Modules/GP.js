@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
+    Personal: {
+        type: String,
+        required: true,
+        unique: false
+    },
     Name: {
         type: String,
         required: true,
@@ -9,12 +14,6 @@ const userSchema = new mongoose.Schema({
     Password:{
         type: String,
         required:true,
-        unique: true,
-    },
-    DOB: {
-        type: String,
-        required: true,
-        unique: false
     },
     State: {
         type: String,
@@ -31,13 +30,13 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: false
     },
-    Gov_id_of_Consumer: {
+    Gov_id_of_GP: {
         type: String,
         required: true,
         unique: true
     },
-    House_No: {
-        type: Number,
+    GST_reg_No: {
+        type: String,
         required: true,
         unique: false
     },
@@ -51,18 +50,19 @@ const userSchema = new mongoose.Schema({
         required: false,
         unique: true
     },
-    No_of_family_Members: {
-        type: Number,
+    Work_Exp: {
+        type: String,
         required: true,
         unique: false
     },
-    Gov_tap_Connect: {
-        type: String,
-        required: true,
-        enum: ["YES", "NO"],
-        default: "YES"
+    fcmToken: {
+        type:String,
+        default:null
     },
+    
+    deviceType : {type:String ,default:null},
+    token : {type:String, default:''}
 })
 
-const consumer = mongoose.model("Consumer", userSchema)
-module.exports = consumer;
+const gp = mongoose.model("gp",userSchema);
+module.exports = gp;
