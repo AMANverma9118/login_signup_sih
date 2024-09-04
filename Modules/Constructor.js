@@ -1,11 +1,6 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-    Personal: {
-        type: String,
-        required: true,
-        unique: false
-    },
     Name_of_Company: {
         type: String,
         required: true,

@@ -1,11 +1,6 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-    Personal: {
-        type: String,
-        required: true,
-        unique: false
-    },
     Name: {
         type: String,
         required: true,
@@ -50,11 +45,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: false,
         unique: true
-    },
-    Professional: {
-        type: String,
-        required: true,
-        unique: false
     },
     Work_exp: {
         type: String,
