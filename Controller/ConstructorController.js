@@ -3,12 +3,30 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const randomstring = require('randomstring');
 
+const validatePassword = (password) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@<#$%])[a-zA-Z\d@<#$%]{8,}$/.test(password);
+
 const ConstSignup = async (req, res) => {
     const { Email, Name, Password } = req.body
 
 
 
     try {
+
+        if (!validatePassword(Password)) {
+            return res.status(400).json({ 
+                status: false, 
+                error: "Password must be at least aman 8 characters long and include one uppercase letter, one lowercase letter, one digit, and one special character (@, <, #, $, %)." 
+            });
+        }
+
+        if (!validatePassword(Password)) {
+            return res.status(400).json({ 
+                status: false, 
+                error: "Password must be at least aman 8 characters long and include one uppercase letter, one lowercase letter, one digit, and one special character (@, <, #, $, %)." 
+            });
+        }
+
+
         let checkUser = await constru.findOne({ "$or": [{ Email: Email }, { Name: Name }] })
 
         if (!checkUser) {
